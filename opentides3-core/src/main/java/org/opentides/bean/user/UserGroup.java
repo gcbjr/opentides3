@@ -83,6 +83,11 @@ public class UserGroup extends BaseEntity{
 		authorities = new HashSet<UserAuthority>();
 		authorityNames = new ArrayList<String>();
 	}
+	
+	public UserGroup(Long id, String name) {
+		setId(id);
+		this.name = name;
+	}
 
 	/**
 	 * @return the roleNames

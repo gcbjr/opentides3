@@ -83,4 +83,13 @@ public interface UserGroupService extends BaseCrudService<UserGroup> {
 	 */
 	public void removeOldDefaultUserGroup(Long groupId);
 	
+	Long countUserAuthorities(Long userGroupId);
+	
+	/**
+	 * Find UserGroup like %name%
+	 * @param name
+	 * @return
+	 */
+	List<UserGroup> findByNameLike(String name);
+	
 }

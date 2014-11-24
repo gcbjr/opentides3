@@ -77,4 +77,13 @@ public interface UserGroupDao extends BaseEntityDao<UserGroup, Long> {
 	 */
 	public UserGroup getDefaultUserGroup();
 	
+	/**
+	 * Count user authorities for the given userGroupId
+	 * @param userGroupId
+	 * @return
+	 */
+	public Long countUserAuthorities(Long userGroupId);
+	
+	public List<UserGroup> findByNameLike(String name);
+	
 }

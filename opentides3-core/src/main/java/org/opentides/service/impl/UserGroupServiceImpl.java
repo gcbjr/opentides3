@@ -136,5 +136,15 @@ public class UserGroupServiceImpl extends BaseCrudServiceImpl<UserGroup>
 			save(group);
 		}
 	}
+	
+	@Override
+	public Long countUserAuthorities(Long userGroupId) {
+		return ((UserGroupDao)dao).countUserAuthorities(userGroupId);
+	}
+	
+	@Override
+	public List<UserGroup> findByNameLike(String name) {
+		return ((UserGroupDao)dao).findByNameLike(name);
+	}
 
 }

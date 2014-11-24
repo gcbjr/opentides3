@@ -124,5 +124,20 @@ public class UserGroupDaoJpaImpl extends BaseEntityDaoJpaImpl<UserGroup, Long>
 		
 		return (UserGroup) query.getSingleResult();
 	}
+	
+	@Override
+	public Long countUserAuthorities(Long userGroupId) {
+		String queryString = getJpqlQuery("jpql.usergroup.countUserAuthorities");
+		Query query = getEntityManager().createQuery(queryString);
+		query.setParameter("userGroupId", userGroupId);
+		return (Long)query.getSingleResult();
+	}
+	
+	@Override
+	public List<UserGroup> findByNameLike(String name) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("name", "%" + name + "%");
+		return findByNamedQuery("jpql.usergroup.findByNameLike", params);
+	}
 
 }

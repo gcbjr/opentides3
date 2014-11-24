@@ -51,6 +51,10 @@ public class UserAuthority extends BaseEntity {
 	@JoinColumn(name = "USERGROUP_ID", nullable = true)
 	@JsonIgnore
 	private UserGroup userGroup;
+	
+	// ID of the UserGroup. This is for searching only
+	@Column(name = "USERGROUP_ID", insertable = false, updatable = false)
+	private Long userGroupId;
 
 	public UserAuthority() {
 		super();
@@ -106,6 +110,14 @@ public class UserAuthority extends BaseEntity {
 	 */
 	public void setUserGroup(UserGroup userGroup) {
 		this.userGroup = userGroup;
+	}
+	
+	public Long getUserGroupId() {
+		return userGroupId;
+	}
+	
+	public void setUserGroupId(Long userGroupId) {
+		this.userGroupId = userGroupId;
 	}
 	
 	/*
