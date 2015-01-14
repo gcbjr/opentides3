@@ -166,6 +166,16 @@ public class AuditLogDaoImpl extends BaseEntityDaoJpaImpl<AuditLog, Long> implem
 			}
 			append.append(" obj.message like '%").append(example.getLogAction()).append("%' ");
 		}
+		
+		if(example.getUpdatee() != null) {
+		     if(append.length()>0) {
+		           append.append(" AND ");
+		     }
+		     append.append(" obj.message like '%")
+		             .append(example.getUpdatee())
+		             .append("%' ");
+
+		}
 		return append.toString();
 	}
 	

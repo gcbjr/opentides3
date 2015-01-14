@@ -121,6 +121,9 @@ public class AuditLog extends BaseEntity {
 	
 	@Transient
 	private transient String logAction;
+	
+	@Transient
+	private String updatee;
     
 	/**
      * Default constructor.
@@ -377,6 +380,14 @@ public class AuditLog extends BaseEntity {
 	
 	public Date getEndDateForSearch() {
 		return endDateForSearch;
+	}
+	
+	public void setUpdatee(String updatee) {
+		this.updatee = updatee;
+	}
+	
+	public String getUpdatee() {
+		return updatee;
 	}
 	
 }

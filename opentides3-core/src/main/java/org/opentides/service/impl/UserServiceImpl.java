@@ -477,4 +477,16 @@ public class UserServiceImpl extends BaseCrudServiceImpl<BaseUser> implements
         return results;
     }
 	
+	@Override
+	public boolean isUserLockedOutManual(String username, long maxAttempts) {
+		UserDao userDao = (UserDao) getDao();
+		BaseUser user = userDao.loadByUsername(username);
+		if(user != null) {
+			if(user.getFailedLoginCount() != null && user.getFailedLoginCount()>= maxAttempts) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 }

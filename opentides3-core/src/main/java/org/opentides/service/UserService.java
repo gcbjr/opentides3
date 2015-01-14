@@ -135,4 +135,6 @@ public interface UserService extends BaseCrudService<BaseUser> {
 	public void requestPasswordReset(String emailAddress);
 	
 	public List<SessionInformation> getAllLoggedUsersPagenation(int start, int total);
+	
+	public boolean isUserLockedOutManual(String username, long maxAttempts);
 }

@@ -97,7 +97,7 @@ public class AuthenticationDaoJdbcImpl extends JdbcDaoImpl implements Applicatio
             for (String key:result.keySet())
             	sessUser.addProfile(key, result.get(key));
             if(enableUserLockCheck) {
-            	if(userService.isUserLockedOut(username, maxAttempts, lockoutSeconds)) {
+            	if(userService.isUserLockedOutManual(username, maxAttempts)) {
             		user = new User(sessUser.getUsername(), sessUser.getPassword(), sessUser.isEnabled(), sessUser.isAccountNonExpired(),
             				sessUser.isCredentialsNonExpired(), false, sessUser.getAuthorities());
             		return user;

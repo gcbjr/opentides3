@@ -119,7 +119,7 @@ public class BaseUser extends BaseEntity implements ImageUploadable {
 	private Long totalLoginCount;
 	
 	@Column(name="FAILED_LOGIN_COUNT")
-	@JsonView(Views.DisplayView.class)
+	@JsonView(Views.SearchView.class)
 	private Long failedLoginCount;
 	
 	@Column(name="LAST_FAILED_LOGIN_MILLIS")
