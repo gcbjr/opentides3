@@ -124,6 +124,18 @@ public class AuditLog extends BaseEntity {
 	
 	@Transient
 	private String updatee;
+	
+	@Transient
+    @JsonView(Views.SearchView.class)
+    private String name;
+
+    public String getName() {
+    	return name;
+    }
+
+    public void setName(String name) {
+    	this.name = name;
+    }
     
 	/**
      * Default constructor.
