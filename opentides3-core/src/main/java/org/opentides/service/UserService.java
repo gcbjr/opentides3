@@ -96,7 +96,7 @@ public interface UserService extends BaseCrudService<BaseUser> {
 	 * @param timestamp
 	 *            the last failed login timestamp
 	 */
-	public void updateFailedLogin(String username, long timestamp);
+	public Long updateFailedLogin(String username, long timestamp);
 
 	/**
 	 * Unlock a locked-out user

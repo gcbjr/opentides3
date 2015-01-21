@@ -250,14 +250,17 @@ public class UserServiceImpl extends BaseCrudServiceImpl<BaseUser> implements
 	}
 	
 	@Override
-	public void updateFailedLogin(String username, long timestamp) {
+	public Long updateFailedLogin(String username, long timestamp) {
 		UserDao userDao = (UserDao) getDao();
 		BaseUser user = userDao.loadByUsername(username);
 		if(user != null) {
 			user.incrementFailedLoginCount();
 			user.setLastFailedLoginMillis(timestamp);
+			user.setSkipAudit(true);
 			userDao.saveEntityModel(user);
+			return user.getFailedLoginCount();
 		}
+		return null;
 	}
 	
 	@Override

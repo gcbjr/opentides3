@@ -18,6 +18,8 @@ package org.opentides.persistence.user;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opentides.bean.user.SessionUser;
@@ -87,6 +89,8 @@ public class AuthenticationDaoJdbcImpl extends JdbcDaoImpl implements Applicatio
 		"select U.USERID ID, FIRSTNAME, LASTNAME, EMAIL, P.LASTLOGIN LASTLOGIN, P.OFFICE OFFICE " +
 		"from USER_PROFILE P inner join USERS U on P.ID=U.USERID where U.USERNAME=?";
 	
+	public static String USER_LOCKED_OUT = "USER_LOCKED_OUT";
+	
 	@Override 
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException {
 		try {
@@ -97,6 +101,7 @@ public class AuthenticationDaoJdbcImpl extends JdbcDaoImpl implements Applicatio
             for (String key:result.keySet())
             	sessUser.addProfile(key, result.get(key));
             if(enableUserLockCheck) {
+            	_log.debug("Checking if user is lock...");
             	if(userService.isUserLockedOutManual(username, maxAttempts)) {
             		user = new User(sessUser.getUsername(), sessUser.getPassword(), sessUser.isEnabled(), sessUser.isAccountNonExpired(),
             				sessUser.isCredentialsNonExpired(), false, sessUser.getAuthorities());
@@ -119,14 +124,20 @@ public class AuthenticationDaoJdbcImpl extends JdbcDaoImpl implements Applicatio
 			if(event instanceof AuthenticationSuccessEvent) {
 				userService.unlockUser(((AbstractAuthenticationEvent)event).getAuthentication().getName());
 			} else if(event instanceof AbstractAuthenticationFailureEvent) {
+				_log.debug("Failed login...");
 				String username = ((AbstractAuthenticationEvent)event).getAuthentication().getName();
-				String origin = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest()
-	                    .getRemoteAddr();
+				HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+				String origin = request.getRemoteAddr();
 	            String cause =  ((AbstractAuthenticationFailureEvent) event).getException().toString();
 	            logger.info("Failed authentication for user '" + username + "' from ip " + origin + " caused by " + cause);
 	            if (event instanceof AuthenticationFailureBadCredentialsEvent) {
-	            	if(!userService.isUserLockedOut(username, maxAttempts, lockoutSeconds))
-	            		userService.updateFailedLogin(username, event.getTimestamp());
+	            	if(!userService.isUserLockedOut(username, maxAttempts, lockoutSeconds)) {
+	            		Long count = userService.updateFailedLogin(username, event.getTimestamp());
+	            		_log.debug("Current count [" + count + "], Max Attempts [" + maxAttempts + "]");
+	            		if(count != null && count >= maxAttempts) {
+	            			request.getSession().setAttribute(USER_LOCKED_OUT, true);
+	            		}
+	            	}
 	            }
 			}
 		}
