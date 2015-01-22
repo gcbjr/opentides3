@@ -45,6 +45,9 @@ import com.fasterxml.jackson.annotation.JsonView;
 @Table(name = "USERGROUP")
 @Auditable
 public class UserGroup extends BaseEntity{
+	/**
+	 * Added comment
+	 */
 	private static final long serialVersionUID = 1959110420702540834L;
 
 	@PrimaryField
