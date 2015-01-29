@@ -175,7 +175,8 @@ public class AuditLogDaoImpl extends BaseEntityDaoJpaImpl<AuditLog, Long> implem
 		     }
 		     append.append(" obj.message like '%")
 		             .append(example.getUpdatee())
-		             .append("%' ");
+		             .append("%' ")
+		             .append("AND obj.entityId != obj.userId");
 
 		}
 		return append.toString();
