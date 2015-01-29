@@ -159,18 +159,34 @@ public class CrudUtil {
 				if (!addedList.isEmpty()) {
 					message.append("added ")
 							.append(property.getTitle())
-							.append(" <span class='field-values-added'>")
-							.append(addedList)
-							.append("</span> ");
+							.append(" <span class='field-values-added'>");
+					if(addedList != null && addedList.get(0) instanceof BaseEntity) {
+						for(Object obj : addedList) {
+							message.append(obj.getClass().
+								getName().substring(obj.getClass().getName().lastIndexOf('.') + 1) + 
+								" with id " + ((BaseEntity)obj).getId() + ".");
+						}
+					} else {
+						message.append(addedList);
+					}
+					message.append("</span> ");
 				} 					
 				if (!removedList.isEmpty()) {
 					if (!addedList.isEmpty()) 
 						message.append("and ");
 					message.append("removed ")
 							.append(property.getTitle())
-							.append(" <span class='field-values-removed'>")
-							.append(removedList)				
-							.append("</span> ");
+							.append(" <span class='field-values-removed'>");
+					if(removedList.get(0) instanceof BaseEntity) {
+						for(Object obj : removedList) {
+							message.append(obj.getClass().
+								getName().substring(obj.getClass().getName().lastIndexOf('.') + 1) + 
+								" with id " + ((BaseEntity)obj).getId() + ".");
+						}
+					} else {
+						message.append(removedList);
+					}
+					message.append("</span> ");
 					count++;
 				}				
 			} else {
