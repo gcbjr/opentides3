@@ -164,6 +164,9 @@ public abstract class BaseEntity implements Serializable {
     @Transient
     private Set<String> aliasMapping;
     
+    @Transient
+    private String auditeeName;
+    
     /**
      * Setter method of id.
      * 
@@ -514,6 +517,14 @@ public abstract class BaseEntity implements Serializable {
 	
 	public void setAliasMapping(Set<String> aliasMapping) {
 		this.aliasMapping = aliasMapping;
+	}
+	
+	public String getAuditeeName() {
+		return auditeeName;
+	}
+	
+	public void setAuditeeName(String auditeeName) {
+		this.auditeeName = auditeeName;
 	}
 	
 }

@@ -93,6 +93,10 @@ public class AuditLog extends BaseEntity {
     @Column(name = "USER_DISPLAY")
     private String userDisplayName;
     
+    @JsonView(Views.SearchView.class)
+    @Column(name="AUDITEE")
+    private String auditee;
+    
     /**
      * Temporary reference to object being tracked.
      * Used by AuditLogListener when loading audit log object.
@@ -165,6 +169,24 @@ public class AuditLog extends BaseEntity {
         this.entityClass = entityClass;
         this.reference = reference;
         this.userId = userId;
+        this.setCreateDate(new Date());
+        this.setUserDisplayName(userDisplayName);
+    }
+    
+    @SuppressWarnings({ "rawtypes" })
+    public AuditLog(final String message, 
+            final Long entityId, 
+            final Class entityClass,
+            final String reference,
+            final Long userId,
+            final String userDisplayName,
+            final String auditeeName) {
+        this.message = message;
+        this.entityId = entityId;
+        this.entityClass = entityClass;
+        this.reference = reference;
+        this.userId = userId;
+        this.auditee = auditeeName;
         this.setCreateDate(new Date());
         this.setUserDisplayName(userDisplayName);
     }
@@ -274,6 +296,14 @@ public class AuditLog extends BaseEntity {
 	 */
 	public final void setUserDisplayName(String userDisplayName) {
 		this.userDisplayName = userDisplayName;
+	}
+	
+	public String getAuditee() {
+		return auditee;
+	}
+	
+	public void setAuditee(String auditee) {
+		this.auditee = auditee;
 	}
 
 	/**

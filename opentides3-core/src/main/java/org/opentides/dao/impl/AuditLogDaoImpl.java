@@ -90,6 +90,7 @@ public class AuditLogDaoImpl extends BaseEntityDaoJpaImpl<AuditLog, Long> implem
 	public static void logEvent(String message, BaseEntity entity) { 		
 		Long userId = entity.getAuditUserId();
 		String username = entity.getAuditUsername();
+		String auditeeName = entity.getAuditeeName();
 		
 		if (ApplicationStartupListener.isApplicationStarted()) {
 			if (userId==null) {
@@ -114,7 +115,8 @@ public class AuditLogDaoImpl extends BaseEntityDaoJpaImpl<AuditLog, Long> implem
 	            			entity.getClass(), 
 	                        entity.getReference(),
 	                        userId,
-	                        username); 
+	                        username,
+	                        auditeeName); 
 			em.persist(record);
 			em.flush(); 
 			em.getTransaction().commit();
