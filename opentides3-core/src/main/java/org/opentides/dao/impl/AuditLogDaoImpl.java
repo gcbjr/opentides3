@@ -118,10 +118,21 @@ public class AuditLogDaoImpl extends BaseEntityDaoJpaImpl<AuditLog, Long> implem
 	                        username,
 	                        auditeeName); 
 			em.persist(record);
-			em.flush(); 
+			em.flush();
+			_log.debug("Commiting transaction for " + entity.getClass().toString());
 			em.getTransaction().commit();
+		} catch(Exception e) {
+			try {
+				_log.debug("Rolling back transaction for " + entity.getClass().toString());
+				em.getTransaction().rollback();
+			}
+			catch (Exception re) {
+				//swallow the error...
+			}
 		} finally {
 			if(em != null && em.isOpen()) {
+				_log.debug(String.format("Closing entity manager for class [%s]...", 
+						entity.getClass().toString()));
 				em.close(); 
 			}
 		}
