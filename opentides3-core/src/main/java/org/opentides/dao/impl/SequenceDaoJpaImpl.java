@@ -23,6 +23,7 @@ import java.util.Map;
 
 import javax.persistence.OptimisticLockException;
 
+import org.hibernate.StaleObjectStateException;
 import org.opentides.bean.Sequence;
 import org.opentides.dao.SequenceDao;
 import org.springframework.stereotype.Repository;
@@ -88,7 +89,7 @@ public class SequenceDaoJpaImpl extends BaseEntityDaoJpaImpl<Sequence, Long>
 		code.incrementValue(step);
 		try {
 			this.saveEntityModel(code);
-		} catch (OptimisticLockException ole) {
+		} catch (OptimisticLockException | StaleObjectStateException ole) {
 			if(retryCount > maxRetry) {
 				throw new RuntimeException(
 					"Maximum retry count reached while generating sequence number for " + key);
